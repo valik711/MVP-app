@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Приложение MVP</string>
+    <string name="add">Добавить</string>
+    <string name="clear">Очистить</string>
+    <string name="please_wait">Ожидайте...</string>
+    <string name="empty_values">Неверные данные</string>
+</resources>
