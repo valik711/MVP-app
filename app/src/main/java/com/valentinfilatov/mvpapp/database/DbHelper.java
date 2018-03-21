@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.valentinfilatov.mvpapp.common.UserTable;
+import com.valentinfilatov.mvpapp.common.CoordsTable;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -18,7 +18,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(UserTable.CREATE_SCRIPT);
+        sqLiteDatabase.execSQL(CoordsTable.CREATE_SCRIPT);
     }
 
     @Override

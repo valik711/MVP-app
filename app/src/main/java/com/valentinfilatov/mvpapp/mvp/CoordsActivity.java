@@ -1,41 +1,47 @@
 package com.valentinfilatov.mvpapp.mvp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 
+import com.valentinfilatov.mvpapp.GPSService;
+import com.valentinfilatov.mvpapp.MapActivity;
 import com.valentinfilatov.mvpapp.R;
-import com.valentinfilatov.mvpapp.common.User;
-import com.valentinfilatov.mvpapp.common.UserAdapter;
+import com.valentinfilatov.mvpapp.common.Coordinate;
+import com.valentinfilatov.mvpapp.common.CoordinateAdapter;
 import com.valentinfilatov.mvpapp.database.DbHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UsersActivity extends AppCompatActivity {
+public class CoordsActivity extends AppCompatActivity {
 
-    private UserAdapter userAdapter;
+    private CoordinateAdapter userAdapter;
 
-    @BindView(R.id.name) protected EditText editTextName;
-    @BindView(R.id.age) protected EditText editTextAge;
+    @BindView(R.id.lat) protected EditText etLat;
+    @BindView(R.id.lng) protected EditText etLng;
     private ProgressDialog progressDialog;
 
 
-    private UsersPresenter presenter;
+    private CoordsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single);
         init();
+        startService(new Intent(this, GPSService.class));
     }
 
     private void init() {
@@ -45,7 +51,7 @@ public class UsersActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        userAdapter = new UserAdapter();
+        userAdapter = new CoordinateAdapter();
 
         RecyclerView userList = (RecyclerView) findViewById(R.id.list);
         userList.setLayoutManager(layoutManager);
@@ -53,24 +59,25 @@ public class UsersActivity extends AppCompatActivity {
 
 
         DbHelper dbHelper = new DbHelper(this);
-        UsersModel usersModel = new UsersModel(dbHelper);
-        presenter = new UsersPresenter(usersModel);
+        CoordsModel usersModel = new CoordsModel(dbHelper);
+        presenter = new CoordsPresenter(usersModel);
         presenter.attachView(this);
         presenter.viewIsReady();
     }
 
-    public PlayerData getUserData() {
-        PlayerData userData = new PlayerData();
-        userData.setName(editTextName.getText().toString());
+    public CoordData getCoordData() {
+        CoordData coordData = new CoordData();
+        coordData.setTime((new Date()).getTime());
         try {
-            userData.setAge(Integer.parseInt(editTextAge.getText().toString()));
+            coordData.setLat(Double.parseDouble(etLat.getText().toString()));
+            coordData.setLng(Double.parseDouble(etLng.getText().toString()));
         } catch (NumberFormatException e){
-            userData.setAge(0);
+            coordData.setTime(0);
         }
-        return userData;
+        return coordData;
     }
 
-    public void showUsers(List<User> users) {
+    public void showCoords(List<Coordinate> users) {
         userAdapter.setData(users);
     }
 
@@ -101,5 +108,22 @@ public class UsersActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         presenter.detachView();
+        stopService(new Intent(this, GPSService.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.users_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.map:
+                startActivity(new Intent(this, MapActivity.class));
+                break;
+        }
+        return true;
     }
 }

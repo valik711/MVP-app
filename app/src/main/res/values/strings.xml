@@ -6,4 +6,5 @@
     <string name="clear">Clear</string>
     <string name="please_wait">Please, wait ...</string>
     <string name="empty_values">Incorrect data</string>
+    <string name="map">Item</string>
 </resources>

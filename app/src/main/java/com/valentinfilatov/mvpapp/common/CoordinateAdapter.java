@@ -1,7 +1,6 @@
 package com.valentinfilatov.mvpapp.common;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,18 @@ import java.util.List;
 
 import com.valentinfilatov.mvpapp.R;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
+public class CoordinateAdapter extends RecyclerView.Adapter<CoordinateAdapter.CoordinateHolder> {
 
-    List<User> data = new ArrayList<>();
+    List<Coordinate> data = new ArrayList<>();
 
     @Override
-    public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CoordinateHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false);
-        return new UserHolder(view);
+        return new CoordinateHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(UserHolder holder, int position) {
+    public void onBindViewHolder(CoordinateHolder holder, int position) {
         holder.bind(data.get(position));
     }
 
@@ -32,24 +31,23 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
         return data.size();
     }
 
-    public void setData(List<User> users) {
+    public void setData(List<Coordinate> coordinates) {
         data.clear();
-        data.addAll(users);
+        data.addAll(coordinates);
         notifyDataSetChanged();
-        Log.d("qweee", "size  = " + getItemCount());
     }
 
-    static class UserHolder extends RecyclerView.ViewHolder {
+    static class CoordinateHolder extends RecyclerView.ViewHolder {
 
         TextView text;
 
-        public UserHolder(View itemView) {
+        public CoordinateHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.text);
         }
 
-        void bind(User user) {
-            text.setText(String.format("id: %s, name: %s, age: %s", user.getId(), user.getName(), user.getAge()));
+        void bind(Coordinate coord) {
+            text.setText(String.format("id: %s, lat: %.6f, lng: %.6f, time: %s", coord.getId(), coord.getLat(), coord.getLng(), coord.getDate()));
         }
     }
 
