@@ -16,12 +16,16 @@ import com.valentinfilatov.mvpapp.common.User;
 import com.valentinfilatov.mvpapp.common.UserAdapter;
 import com.valentinfilatov.mvpapp.database.DbHelper;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class UsersActivity extends AppCompatActivity {
 
     private UserAdapter userAdapter;
 
-    private EditText editTextName;
-    private EditText editTextAge;
+    @BindView(R.id.name) protected EditText editTextName;
+    @BindView(R.id.age) protected EditText editTextAge;
     private ProgressDialog progressDialog;
 
 
@@ -36,22 +40,7 @@ public class UsersActivity extends AppCompatActivity {
 
     private void init() {
 
-        editTextName = (EditText) findViewById(R.id.name);
-        editTextAge = (EditText) findViewById(R.id.age);
-
-        findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.add();
-            }
-        });
-
-        findViewById(R.id.clear).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.clear();
-            }
-        });
+        ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -93,6 +82,15 @@ public class UsersActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @OnClick(R.id.add) public void onAddClicked(){
+        presenter.add();
+    }
+
+    @OnClick(R.id.clear) public void onClearClicked(){
+        presenter.clear();
+
     }
 
     @Override
