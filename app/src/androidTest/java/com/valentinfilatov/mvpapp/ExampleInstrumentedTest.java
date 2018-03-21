@@ -23,4 +23,5 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.valentinfilatov.mvpapp", appContext.getPackageName());
     }
+
 }

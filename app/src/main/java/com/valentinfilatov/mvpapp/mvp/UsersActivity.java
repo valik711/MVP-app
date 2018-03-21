@@ -62,7 +62,11 @@ public class UsersActivity extends AppCompatActivity {
     public PlayerData getUserData() {
         PlayerData userData = new PlayerData();
         userData.setName(editTextName.getText().toString());
-        userData.setAge(Integer.parseInt(editTextAge.getText().toString()));
+        try {
+            userData.setAge(Integer.parseInt(editTextAge.getText().toString()));
+        } catch (NumberFormatException e){
+            userData.setAge(0);
+        }
         return userData;
     }
 
